@@ -14,7 +14,7 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.title}>Hello</div>
         <div className="iframe-container videoContainer">
-          <iframe loading="lazy" src="https://xestreams.com/livetv/tv11.php"  allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+          <iframe loading="lazy" src="http://xestreams.com/livetv/tv11.php"  allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
         </div>
       </main>
     </div>
