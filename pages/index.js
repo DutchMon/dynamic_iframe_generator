@@ -7,11 +7,12 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>Watch Stuff</title>
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
         <meta name="description" content="Easier way to watch stuff" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.title}></div>
+        <div className={styles.title}>Hello</div>
         <div className="iframe-container videoContainer">
           <iframe loading="lazy" src="https://xestreams.com/livetv/tv11.php"  allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
         </div>
