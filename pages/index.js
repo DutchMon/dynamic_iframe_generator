@@ -24,7 +24,7 @@ export default function Home() {
           <div className="main-column">
             <div className="videoContainer">
               <div className="iframe-container">
-                <iframe loading="lazy" src="https://hazmolive.stream/mlb/index.php?team=marlins" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                <iframe loading="lazy" src="https://poscitech.click/en/ch15.php" allow="fullscreen" ></iframe>
               </div>
             </div>
           </div>
