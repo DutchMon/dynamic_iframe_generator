@@ -24,7 +24,7 @@ export default function Home() {
           <div className="main-column">
             <div className="videoContainer">
               <div className="iframe-container">
-                <iframe loading="lazy" src="http://weakstreams.com/streams/10236821" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                <iframe loading="lazy" src="http://bdnewszh.com/embed/mlb/dodgers.php" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
               </div>
             </div>
           </div>
