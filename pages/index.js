@@ -24,7 +24,7 @@ export default function Home() {
           <div className="main-column">
             <div className="videoContainer">
               <div className="iframe-container">
-                <iframe loading="lazy" src="http://bdnewszh.com/embed/mlb/dodgers.php" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+                <iframe loading="lazy" src="http://bdnewszh.com/embed/mlb/diamondbacks.php" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
               </div>
             </div>
           </div>
