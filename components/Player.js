@@ -27,7 +27,17 @@ export default function Player({ source }) {
             playbackConfig: {
                 crossorigin: 'use-credentials'
             },
-            plugins: [LevelSelector]
+            plugins: [LevelSelector],
+
+            levelSelectorConfig: {
+
+                labelCallback: function (playbackLevel, customLabel) {
+
+                    return Math.round(playbackLevel.level.bitrate / 1000) + ' kbps';
+
+                }
+
+            },
         })
 
         return (player.attachTo(playerElement))
