@@ -1,7 +1,7 @@
 import Clappr from 'clappr'
 import { useRef, useEffect } from "react"
 import LevelSelector from 'level-selector'
-import ClapprPIP from 'clappr-pip-plugin'
+import ClapprPIPPlugin from 'clappr-pip-plugin'
 
 export default function Player({ source }) {
 
