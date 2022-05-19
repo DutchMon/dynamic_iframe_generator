@@ -30,7 +30,7 @@ export default function Home() {
           <div className="left-column"></div>
           <div className="main-column">
             <div className="videoContainer">
-              <Player source='https://hlslive-akc-ewr1.media.mlb.com/hdnts=exp=1652989278~acl=/*~id=00u7wswqeh2rj4unp356~data=e64c34b9-8596-4a82-8fd6-43f19d7d1a0b~hmac=0569dac1f68d7561182234dbf036fb125536f741dd9fa0444514dce51f6b12a1/99bda64d5725ac50018301f7dd5269ba/va01/mlb/2022/05/18/Away_VIDEO_eng_Arizona_Diamondbacks_Los__20220518_1652897425098/192K/192_complete_gdfp.m3u8'/>
+              <Player source='https://2.p2plink.xyz/live/Diamondbacks/playlist.m3u8?wowzatokenendtime=1653001935&wowzatokenhash=dVya1qKcEJXlu842yeil-x6-SlKg2eO22WP9k7cUyhbUsTcOOAvwyyZBtZe5RCASgjrJjM_mL7_8e4v1ocIJXw==&wowzatokenstarttime=1653000435'/>
             </div>
           </div>
           <div className="right-column"></div>
