@@ -1,7 +1,7 @@
 import Clappr from 'clappr'
 import { useRef, useEffect } from "react"
 import LevelSelector from 'level-selector'
-import ClapprPIPPlugin from 'clappr-pip-plugin'
+import clapprPipPlugin from 'clappr-pip-plugin'
 
 export default function Player({ source }) {
 
@@ -48,7 +48,7 @@ export default function Player({ source }) {
             playbackConfig: {
                 crossorigin: ''
             },
-            plugins: [LevelSelector, ClapprPIP],
+            plugins: [LevelSelector, clapprPipPlugin],
 
             levelSelectorConfig: {
 
