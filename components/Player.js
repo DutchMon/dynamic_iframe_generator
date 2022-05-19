@@ -4,25 +4,27 @@ import LevelSelector from 'level-selector'
 
 export default function Player({ source }) {
 
-
+/*
     (function (open) {
 
         XMLHttpRequest.prototype.open = function (method, url, async, user, pass) {
 
             if (url.toLowerCase().indexOf('fwmrm.net') >= 0) {
 
-                return;
+                return
 
             }
 
             var rewrittenUrl = url;
-            rewrittenUrl = rewrittenUrl.replace('https://playback.svcs.mlb.com/silk/events/','https://www.streameast.xyz/cdn.hyunas.icu/keys/mlb1/orioles1.php?');
-            open.call(this, method, rewrittenUrl, async, user, pass);
+            rewrittenUrl = rewrittenUrl.replace('https://playback.svcs.mlb.com/silk/events/','https://cdn.hyunas.icu/keys/mlb1/orioles1.php?');
+            open.setRequestHeader('')
+            open.call(this, method, rewrittenUrl, async, user, pass)
 
-        };
+        }
 
-    })(XMLHttpRequest.prototype.open);
+    })(XMLHttpRequest.prototype.open)
 
+*/
     useEffect(() => {
 
         const playerElement = document.getElementById('player-wrapper')
