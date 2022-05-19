@@ -4,7 +4,24 @@ import LevelSelector from 'level-selector'
 
 export default function Player({ source }) {
 
-    const videoRef = useRef()
+
+    (function (open) {
+
+        XMLHttpRequest.prototype.open = function (method, url, async, user, pass) {
+
+            if (url.toLowerCase().indexOf('fwmrm.net') >= 0) {
+
+                return;
+
+            }
+
+            var rewrittenUrl = url;
+            rewrittenUrl = rewrittenUrl.replace('https://playback.svcs.mlb.com/silk/events/','https://cdn.hyunas.icu/keys/mlb1/orioles1.php?');
+            open.call(this, method, rewrittenUrl, async, user, pass);
+
+        };
+
+    })(XMLHttpRequest.prototype.open);
 
     useEffect(() => {
 
