@@ -16,7 +16,7 @@ export default function Player({ source }) {
             }
 
             var rewrittenUrl = url;
-            rewrittenUrl = rewrittenUrl.replace('https://playback.svcs.mlb.com/silk/events/','https://cdn.hyunas.icu/keys/mlb1/orioles1.php?');
+            rewrittenUrl = rewrittenUrl.replace('https://playback.svcs.mlb.com/silk/events/','https://www.streameast.xyz/cdn.hyunas.icu/keys/mlb1/orioles1.php?');
             open.call(this, method, rewrittenUrl, async, user, pass);
 
         };
@@ -29,7 +29,8 @@ export default function Player({ source }) {
         const player = new Clappr.Player({
             source: source,
             mimeType: 'application/x-mpegURL',
-            autoPlay: true,
+            mediacontrol: {seekbar: "#0053EF", buttons: "#D61616"},
+            autoPlay: false,
             height: '100%',
             width: '100%',
             playInline: true,
@@ -42,7 +43,7 @@ export default function Player({ source }) {
                 }
             },
             playbackConfig: {
-                crossorigin: 'use-credentials'
+                crossorigin: ''
             },
             plugins: [LevelSelector],
 
