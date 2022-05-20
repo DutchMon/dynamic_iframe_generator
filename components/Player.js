@@ -1,4 +1,4 @@
-import Clappr from 'clappr'
+import Clappr from '../node_modules/clappr/dist/clappr'
 import { useRef, useEffect } from "react"
 import LevelSelector from 'level-selector'
 
