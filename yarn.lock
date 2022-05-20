@@ -392,11 +392,6 @@ chalk@^4.0.0:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-clappr-pip-plugin@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/clappr-pip-plugin/-/clappr-pip-plugin-2.0.1.tgz#f25f7048ac5873103b19713a2a8a66b30db5a68e"
-  integrity sha512-jHbTqSeE2bd2m3UDvXHnintwVI2nI22w3bYr2/6o8WmoJbwNOlJIdmRbQihQk+XdRu4lsL2nwuTRzNSeK22kZQ==
-
 clappr@^0.3.13:
   version "0.3.13"
   resolved "https://registry.yarnpkg.com/clappr/-/clappr-0.3.13.tgz#e2eacc37cb85024b7f73c0e0fcb4de52d0f15d7f"
