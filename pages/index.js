@@ -8,8 +8,9 @@ const Player = dynamic(import("../components/Player"), { ssr: false})
 
 
 
-export default function Home() {
+function Home({ data }) {
 
+  //console.log(typeof data)
 
   return (
     <div className={styles.container}>
@@ -30,7 +31,7 @@ export default function Home() {
           <div className="left-column"></div>
           <div className="main-column">
             <div className="videoContainer">
-              <Player source='https://www.givemevibes.com/boot/pass.php?id=diamondbacks'/>
+              <Player source={data} />
             </div>
           </div>
           <div className="right-column"></div>
@@ -39,3 +40,15 @@ export default function Home() {
     </div>
   )
 }
+
+ export async function getServerSideProps() {
+  const res = await fetch('https://www.givemevibes.com/boot/pass.php?id=Cubs')
+  console.log(res.url)
+  const streamURL = res.url
+
+  return {
+    props: { data: streamURL  }
+  }
+}
+
+export default Home
