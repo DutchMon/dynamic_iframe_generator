@@ -30,7 +30,7 @@ export default function Home() {
           <div className="left-column"></div>
           <div className="main-column">
             <div className="videoContainer">
-              <Player source='https://2.p2plink.xyz/live/Diamondbacks/playlist.m3u8?wowzatokenendtime=1653001935&wowzatokenhash=dVya1qKcEJXlu842yeil-x6-SlKg2eO22WP9k7cUyhbUsTcOOAvwyyZBtZe5RCASgjrJjM_mL7_8e4v1ocIJXw==&wowzatokenstarttime=1653000435'/>
+              <Player source='https://www.givemevibes.com/boot/pass.php?id=diamondbacks'/>
             </div>
           </div>
           <div className="right-column"></div>
