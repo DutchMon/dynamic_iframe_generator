@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import dynamic from "next/dynamic"
+import Dropdown from '../components/Dropdown'
 
 const Player = dynamic(import("../components/Player"), { ssr: false})
 
@@ -21,7 +22,9 @@ function Home({ data }) {
       </Head>
       <main className={styles.main}>
         <div className="column-container">
-          <div className="left-column"></div>
+          <div className="left-column content-center">
+            <Dropdown></Dropdown>
+          </div>
           <div className="main-column">
             <div className={styles.title}>Enjoy the game</div>
           </div>
@@ -42,8 +45,8 @@ function Home({ data }) {
 }
 
  export async function getServerSideProps() {
-  const res = await fetch('https://www.givemevibes.com/boot/pass.php?id=Cubs')
-  console.log(res.url)
+  const res = await fetch('https://www.givemevibes.com/boot/pass.php?id=Rockies')
+  //console.log(res.url)
   const streamURL = res.url
 
   return {

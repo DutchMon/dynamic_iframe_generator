@@ -1,3 +1,8 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
 html,
 body {
   overflow: scroll;
@@ -28,6 +33,9 @@ a {
   width: 80vw;
   height: 80vh;
 }
+svg {
+  display: inline-block;
+}
 .column-container {
   display: flex;
   width: 100vw;
@@ -35,12 +43,13 @@ a {
 
 .left-column {
   display: flex;
-  width: 10%;
+  width: 20%;
+  align-items: center;
 }
 
 .main-column {
   display: flex;
-  width: 80%;
+  width: 70%;
 }
 
 .right-column {
