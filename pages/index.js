@@ -45,7 +45,7 @@ function Home({ data }) {
 }
 
  export async function getServerSideProps() {
-  const res = await fetch('https://www.givemevibes.com/boot/pass.php?id=Rockies')
+  const res = await fetch('https://www.givemevibes.com/boot/pass.php?id=Royals')
   //console.log(res.url)
   const streamURL = res.url
 
