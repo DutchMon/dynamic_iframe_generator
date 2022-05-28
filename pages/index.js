@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.css'
 import dynamic from "next/dynamic"
 import Dropdown from '../components/Dropdown'
 import { useEffect, useState } from 'react'
-import { now } from 'moment-timezone'
+import { server } from '../config'
 
 const Player = dynamic(import("../components/Player"), { ssr: false })
 
@@ -113,12 +113,12 @@ function Home({ scheduled, finished, upcoming, inProgress }) {
 	)
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
 
 	let dev = process.env.NODE_ENV !== 'production'
 	let { DEV_URL, PROD_URL } = process.env
 
-	const mlbRes = await fetch(`${dev ? DEV_URL : PROD_URL}/api/mlb`)
+	const mlbRes = await fetch(`${server}/api/mlb`)
 	let mlbData = await mlbRes.json()
 
 	//console.log("--Hello--", mlbData['scheduled'])
