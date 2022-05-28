@@ -113,7 +113,7 @@ function Home({ scheduled, finished, upcoming, inProgress }) {
 	)
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
 
 	let dev = process.env.NODE_ENV !== 'production'
 	let { DEV_URL, PROD_URL } = process.env
