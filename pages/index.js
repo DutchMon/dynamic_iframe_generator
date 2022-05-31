@@ -3,9 +3,6 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import dynamic from "next/dynamic"
 import Dropdown from '../components/Dropdown'
-import { useEffect, useState } from 'react'
-import { server } from '../config'
-import { resolveHref } from 'next/dist/shared/lib/router/router'
 
 const Player = dynamic(import("../components/Player"), { ssr: false })
 
@@ -14,53 +11,10 @@ const moment = require('moment-timezone')
 
 function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 
-	console.log("URLSSSSSSSSS ------ ", gameURLs)
-	const gameURL = gameURLs
-
-	const awayTeams = []
-	const homeTeams = []
-	const streamUrls = []
-
-	const updateStreams = async () => {
-
-		scheduled[0].forEach((e, index) => {
-			awayTeams[index] = scheduled[0][index].teams.away
-			homeTeams[index] = scheduled[0][index].teams.home
-			const time1 = moment.tz("America/Phoenix").format("hh:mm A").slice(0, 5)
-			const time2 = scheduled[0][index].gameTime.slice(0, 5)
-			const [hours1, minutes1] = time1.split(':')
-			const [hours2, minutes2] = time2.split(':')
-			const date1 = new Date(2022, 0, 1, +hours1, +minutes1)
-			const date2 = new Date(2022, 0, 1, +hours2, +minutes2)
-			const timeDif = ((date1.getTime() - date2.getTime()) / 1000) / (60 * 60)
-			const roundedTime = Math.abs(Math.round(timeDif))
-			if (roundedTime <= 1) {
-				streamUrls[index] = 'https://www.givemevibes.com/boot/pass.php?id=' + scheduled[0][index].teams.away.split(' ').pop();
-				//console.log("stream url " + index, streamUrls[index])
-			}
-		})
-		/*
-		const res = await fetch(streamUrls[0], {
-			mode: 'cors',
-			headers: {
-				'Content-Type': 'application/json;charset=UTF-8'
-			}
-		})
-		const gameURL = await res.json()
-
-		console.log("Did this work???", gameURL)
-		*/
-
-		//console.log("URL ==== ", res)
-
-		//const data = res.text()
-
-	}
+	//console.log("URLSSSSSSSSS ------ ", gameURLs)
+	const gameURL = gameURLs[0]
 
 
-	//const streamURL = res.url
-
-	//console.log(typeof data)
 
 	function makeTableRow(scheduledObj, i) {
 		let gameTime = scheduledObj.gameTime
@@ -92,7 +46,7 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 					</div>
 					<div className="main-column">
 						<div className={styles.title}>Enjoy the game</div>
-						<button className="bg-blueGray-500 text-white active:bg-blueGray-600 font-bold uppercase text-base px-8 py-3 rounded shadow-md hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={updateStreams}>
+						<button className="bg-blueGray-500 text-white active:bg-blueGray-600 font-bold uppercase text-base px-8 py-3 rounded shadow-md hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
 							Get Streams
 						</button>
 					</div>
@@ -133,13 +87,17 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 	)
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
 	const scheduledGamesArray = []
 	const inProgressGamesArray = []
+	const finishedGamesArray = []
 	const awayTeams = []
 	const homeTeams = []
+	const streamUrls = []
 	const scheduledUrls = []
 	const inProgressUrls = []
+	const finishedUrls = []
+	const promises = []
 
 
 	let dev = process.env.NODE_ENV !== 'production'
@@ -156,7 +114,11 @@ export async function getServerSideProps() {
 	mlbData['inProgress'][0].forEach((e, i) => {
 		inProgressGamesArray[i] = mlbData['inProgress'][0][i]
 	})
+	mlbData['finished'][0].forEach((e, i) => {
+		finishedGamesArray[i] = mlbData['finished'][0][i]
+	})
 
+/*------Don't need to use time for this honestly... the stream just wont exist if its not created yet
 
 	scheduledGamesArray.forEach((e, index) => {
 		awayTeams[index] = scheduledGamesArray[index].teams.away
@@ -169,29 +131,81 @@ export async function getServerSideProps() {
 		const date2 = new Date(2022, 0, 1, +hours2, +minutes2)
 		const timeDif = ((date1.getTime() - date2.getTime()) / 1000) / (60 * 60)
 		const roundedTime = Math.abs(Math.round(timeDif))
+		console.log("date1: ", date1.getTime())
+		console.log("date2: ", date2.getTime())
 		if (roundedTime <= 1) {
-			scheduledUrls[index] = 'https://www.givemevibes.com/boot/pass.php?id=' + scheduledGamesArray[index].teams.away.split(' ').pop();
-			console.log("Scheduled stream url " + index, scheduledUrls[index])
+			scheduledUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + scheduledGamesArray[index].teams.away.split(' ').pop())
+			scheduledUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + scheduledGamesArray[index].teams.home.split(' ').pop())
+			//console.log("Scheduled stream url " + index, scheduledUrls[index])
 		}
 	})
+	*/
+	if (scheduledGamesArray.length >= 1) {
+		scheduledGamesArray.forEach((e, index) => {
+			awayTeams[index] = scheduledGamesArray[index].teams.away
+			homeTeams[index] = scheduledGamesArray[index].teams.home
+			scheduledUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + scheduledGamesArray[index].teams.away.split(' ').pop())
+			scheduledUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + scheduledGamesArray[index].teams.home.split(' ').pop())
+			//console.log("inProgress stream url " + index, inProgressUrls[index])
+		})
+	}
 	if (inProgressGamesArray.length >= 1) {
 		inProgressGamesArray.forEach((e, index) => {
 			awayTeams[index] = inProgressGamesArray[index].teams.away
 			homeTeams[index] = inProgressGamesArray[index].teams.home
-			inProgressUrls[index] = 'https://www.givemevibes.com/boot/pass.php?id=' + inProgressGamesArray[index].teams.away.split(' ').pop();
-			console.log("inProgress stream url " + index, inProgressUrls[index])
+			inProgressUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + inProgressGamesArray[index].teams.away.split(' ').pop())
+			inProgressUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + inProgressGamesArray[index].teams.home.split(' ').pop())
+			//console.log("inProgress stream url " + index, inProgressUrls[index])
 		})
 	}
+	/*
+	if (finishedGamesArray.length >= 1) {
+		finishedGamesArray.forEach((e, index) => {
+			awayTeams[index] = finishedGamesArray[index].teams.away
+			homeTeams[index] = finishedGamesArray[index].teams.home
+			finishedUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + finishedGamesArray[index].teams.away.split(' ').pop())
+			finishedUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + finishedGamesArray[index].teams.home.split(' ').pop())
+			//console.log("inProgress stream url " + index, inProgressUrls[index])
+		})
+	}
+	*/
 
-	const res = await fetch(inProgressUrls[0])
-	const gameURL = await res.url
+	inProgressUrls.forEach((e, i) => {
+		streamUrls.push(inProgressUrls[i])
+	})
+	scheduledUrls.forEach((e, i) => {
+		streamUrls.push(scheduledUrls[i])
+	})
 
-	//console.log("scheduled",gameURL)
+
+	const getStreams = async (url)  => {
+		const res = await fetch (url)
+		if (res.status == 200){
+			return res.url
+		}else {
+			return null
+		}
+	}
+	streamUrls.forEach((e, i) => {
+		promises[i] = getStreams(streamUrls[i])
+		//console.log("testing", streamUrls[i])
+	})
+
+	const results  = await Promise.all(promises)
+	const filtered = results.filter(n => n)
+	function removeDuplicates(array) {
+		return array.filter((item, i) =>
+		array.indexOf(item) === i)
+	}
+	const allURLs = removeDuplicates(filtered)
+
+	console.log("results hereeeeeee : ", allURLs)
+
 
 
 	return {
 		props: {
-			gameURLs: gameURL,
+			gameURLs: allURLs,
 			scheduled: mlbData['scheduled'],
 			finished: mlbData['finished'],
 			upcoming: mlbData['upcoming'],
