@@ -103,7 +103,7 @@ export async function getStaticProps() {
 	let dev = process.env.NODE_ENV !== 'production'
 	let { DEV_URL, PROD_URL } = process.env
 
-	const mlbRes = await fetch(`${dev ? DEV_URL : PROD_URL}/api/mlb`)
+	const mlbRes = await fetch(`${server}/api/mlb`)
 	let mlbData = await mlbRes.json()
 
 	//console.log("--Hello--", mlbData['inProgress'])
