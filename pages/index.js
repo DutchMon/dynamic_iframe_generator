@@ -3,6 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import dynamic from "next/dynamic"
 import Dropdown from '../components/Dropdown'
+import { server } from '../config'
 
 const Player = dynamic(import("../components/Player"), { ssr: false })
 
