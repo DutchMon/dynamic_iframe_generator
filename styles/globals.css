@@ -52,6 +52,26 @@ svg {
   display: flex;
   width: 70%;
 }
+.main-table-container {
+  display: flex;
+  width: 100%;
+}
+.main-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+.main-table tr {
+  border-radius: 2rem;
+  border-width: 10px;
+  border-style: solid;
+  border-color: #7A7030;
+
+}
+.main-table tr:hover {
+  background-color: #7A7030;
+}
 
 .right-column {
   display: flex;

@@ -1,5 +1,6 @@
 import React from "react"
 import { createPopper } from '@popperjs/core'
+import Link from 'next/link'
 
 const Dropdown = () => {
   // dropdown props
@@ -27,7 +28,7 @@ const Dropdown = () => {
             : openDropdownPopover()
         }}
       >
-        Select Team to Watch
+        Select Sport
             </button>
       <div
         ref={popoverDropdownRef}
@@ -36,13 +37,16 @@ const Dropdown = () => {
           "bg-green-800 text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 min-w-48"
         }
       >
-        <a
-          href="#pablo"
-          className="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-white"
-          onClick={e => e.preventDefault()}
-        >
-          DBacks
-              </a>
+      <Link href="/">
+        <a className="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-white">
+          Home
+        </a>
+      </Link>
+        <Link href="/mlb">
+          <a className="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-white">
+            MLB
+          </a>
+        </Link>
         <a
           href="#pablo"
           className="text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-transparent text-white"
