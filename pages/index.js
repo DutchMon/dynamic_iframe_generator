@@ -12,7 +12,16 @@ const moment = require('moment-timezone')
 function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 
 	//console.log("URLSSSSSSSSS ------ ", gameURLs)
-	const gameURL = gameURLs[0]
+	let gameURL = gameURLs[0]
+
+	gameURLs.forEach((e, i) => {
+		if (gameURLs[i].includes('Diamondbacks')) {
+			gameURL = gameURLs[i]
+			console.log("Yessss Dbacks")
+		} else {
+			console.log("No Dbacks")
+		}
+	})
 
 
 
