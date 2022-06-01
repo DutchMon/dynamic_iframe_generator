@@ -1,5 +1,6 @@
+import Navbar from './navbar'
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Header from './Header'
 import PropTypes from 'prop-types'
 
 const Layout = ({ children }) => (
@@ -9,10 +10,16 @@ const Layout = ({ children }) => (
             <meta name="description" content="Easier way to watch stuff" />
             <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className={styles.container}>
-            <main className={styles.main}>
-                <div>{children}</div>
-            </main>
+		<div className="dashboard is-full-height">
+			<Navbar></Navbar>
+			<div className="dashboard-main is-scrollable">
+				<Header />
+                    <div>
+                        <main>
+                            <div>{children}</div>
+                        </main>
+                    </div>
+            </div>
         </div>
     </>
 )
