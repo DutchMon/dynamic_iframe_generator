@@ -80,6 +80,10 @@ svg {
   background-color: #7A7030;
 }
 
+.main-table td, .main-table th {
+	vertical-align: middle !important;
+}
+
 .right-column {
   display: flex;
   width: 10%;
@@ -149,10 +153,6 @@ svg {
 }
 }
 /* dashboard */
-.is-scrollable {
-  overflow-y: auto;
-}
-
 .dashboard {
   display: flex;
   flex-direction: row;
@@ -212,11 +212,6 @@ svg {
   background-image: url("../public/background.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  display: flex;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 #noBackgroundImage {
   background-image: none;
