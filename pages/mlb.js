@@ -105,7 +105,7 @@ function MLB({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 								<hr className="is-hidden-mobile"></hr>
 								<section>
 									<div className="b-table has-pagination box" id="boxTable">
-										<div className="table-wrapper has-mobile-cards">
+										<div className="table-wrapper">
 											<table className="table is-fullwidth is-striped is-hoverable is-fullwidth">
 												<thead>
 													<tr>

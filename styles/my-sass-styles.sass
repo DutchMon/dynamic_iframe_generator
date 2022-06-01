@@ -8,6 +8,7 @@ $link-dark: #565656
 $text: #C2C5BB
 $text-strong: #C2C5BB
 $menu-item-hover-background-color: #A50519
+$tablet: 850px
 
 @import "../node_modules/bulma/bulma.sass"
 @import "../node_modules/bulma-pageloader"
@@ -20,7 +21,7 @@ hr
 
 .container
   @include tablet
-    min-width: 1000px
+    width: 100%
   @include mobile
     width: 100%
     padding: 0 !important
@@ -235,6 +236,8 @@ abbr[title]
   background-color: rgb(22,26,25, 0.9)
   box-shadow: 0 0.5em 1em -0.125em #BF0018, 0 0px 0 1px #BF0018
   margin: 0 30px 0 30px
+  @include mobile
+    margin: 0 10px 0 10px
 
   table
     background-color: transparent
@@ -245,6 +248,10 @@ abbr[title]
 .table td, .table th
   border: 1px solid #736231
   border-width: 0 0 1px
+  vertical-align: middle !important
+  @include mobile
+    padding: 1em .5em
+    font-size: small
 
 .table.is-hoverable.is-striped tbody tr:not(.is-selected):hover
   background-color: #A50519

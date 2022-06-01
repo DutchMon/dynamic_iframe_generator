@@ -49,7 +49,6 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 					<td data-label="Name">{home} vs. {away}</td>
 					<td data-label="Sport">MLB</td>
 					<td data-label="Time">{gameTime}</td>
-					<td data-label="idk">idk</td>
 				</tr>
 				<tr className="detail hidden" id={eventId + 'Sub'} key={i + 'Sub'}>
 				</tr>
@@ -108,7 +107,7 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 								<hr className="is-hidden-mobile"></hr>
 								<section>
 									<div className="b-table has-pagination box" id="boxTable">
-										<div className="table-wrapper has-mobile-cards">
+										<div className="table-wrapper">
 											<table className="table is-fullwidth is-striped is-hoverable is-fullwidth">
 												<thead>
 													<tr>
@@ -120,9 +119,6 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 														</th>
 														<th>
 															<abbr title="Time">Start Time</abbr>
-														</th>
-														<th>
-															<abbr title="idk">idk</abbr>
 														</th>
 													</tr>
 												</thead>
