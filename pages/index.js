@@ -1,12 +1,25 @@
-import styles from '../styles/Home.module.css'
-import dynamic from "next/dynamic"
-import Dropdown from '../components/Dropdown'
-import { server } from '../config'
 import Layout from '../components/layout'
+import React, { useState, useEffect } from 'react'
+import dynamic from "next/dynamic"
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
+import tvIcon from '../public/tv-icon.png'
+import { server } from '../config'
+
 
 const Player = dynamic(import("../components/Player"), { ssr: false })
-
 const moment = require('moment-timezone')
+
+
+function Logo(url) {
+	return (
+		<div className="is-centered">
+			<div className="videoContainer">
+				<Player source={url} />
+			</div>
+		</div>
+	)
+}
 
 
 function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
@@ -29,61 +42,100 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 		let gameTime = scheduledObj.gameTime
 		let away = scheduledObj.teams.away
 		let home = scheduledObj.teams.home
+		let eventId = 'event' + i
 		return (
-			<tr key={i}>
-				<td>{home}</td>
-				<td>vs.</td>
-				<td>{away}</td>
-				<td>{gameTime}</td>
-			</tr>
+			<>
+				<tr id={eventId} key={i}>
+					<td data-label="Name">{home} vs. {away}</td>
+					<td data-label="Sport">MLB</td>
+					<td data-label="Time">{gameTime}</td>
+					<td data-label="idk">idk</td>
+				</tr>
+				<tr className="detail hidden" id={eventId + 'Sub'} key={i + 'Sub'}>
+				</tr>
+			</>
 		)
 	}
 
 
-
 	return (
 		<Layout>
-			<div className="column-container">
-				<div className="left-column content-center">
-					<Dropdown></Dropdown>
-				</div>
-				<div className="main-column">
-					<div className={styles.title}>Enjoy the game</div>
-					<button className="bg-blueGray-500 text-white active:bg-blueGray-600 font-bold uppercase text-base px-8 py-3 rounded shadow-md hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
-						Get Streams
-						</button>
-				</div>
-				<div className="right-column"></div>
-			</div>
-			<div className="column-container">
-				{scheduled[0].length === 0 ? (
-					<div className="left-column">
-						<h2>No scheduled games for today</h2>
-					</div>
-				) : (
-						<div className="left-column justify-center">
-							<h2>Scheduled Games</h2>
-							<table className="table-auto">
-								<thead>
-									<tr>
-										<th>Home</th>
-										<th></th>
-										<th>Away</th>
-										<th>Time</th>
-									</tr>
-								</thead>
-								<tbody>
-									{scheduled[0].map(makeTableRow)}
-								</tbody>
-							</table>
+			<div className="column opacityLayer">
+				<div className="container">
+					<section className="hero is-small">
+						<div className="hero-body">
+							<h1 className="title is-size-2 is-uppercase mobileTextCenter" >Watch Live Sports!</h1>
 						</div>
-					)}
-				<div className="main-column">
-					<div className="videoContainer">
-						<Player source={gameURL} />
-					</div>
+					</section>
+					<section className="hero">
+						<Logo source={gameURL}></Logo>
+					</section>
 				</div>
-				<div className="right-column"></div>
+				<div className="container">
+					<hr className="is-hidden-mobile"></hr>
+					{scheduled[0].length === 0 ? (
+						<>
+							<section>
+								<div className="hero is-centered">
+									<div className="hero-body">
+										<div className="level is-hidden-mobile">
+											<div className="level-left">
+												<p className="title is-size-2 is-spaced">No Scheduled Events</p>
+											</div>
+											<div className="level-right">
+												<a className="button is-dark" href="">Button</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</section>
+							<hr className="is-hidden-mobile"></hr>
+						</>
+					) : (
+							<section>
+								<div className="hero is-centered">
+									<div className="hero-body">
+										<div className="level is-hidden-mobile">
+											<div className="level-left">
+												<p className="title is-size-2 is-spaced">Top Events</p>
+											</div>
+											<div className="level-right">
+												<a className="button is-dark" href="">Button</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<hr className="is-hidden-mobile"></hr>
+								<section>
+									<div className="b-table has-pagination box" id="boxTable">
+										<div className="table-wrapper has-mobile-cards">
+											<table className="table is-fullwidth is-striped is-hoverable is-fullwidth">
+												<thead>
+													<tr>
+														<th>
+															<abbr title="Name">Event</abbr>
+														</th>
+														<th>
+															<abbr title="Sport">Sport</abbr>
+														</th>
+														<th>
+															<abbr title="Time">Start Time</abbr>
+														</th>
+														<th>
+															<abbr title="idk">idk</abbr>
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													{scheduled[0].map(makeTableRow)}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</section>
+							</section>
+						)}
+				</div>
 			</div>
 		</Layout>
 	)
@@ -217,3 +269,6 @@ export async function getStaticProps() {
 }
 
 export default Home
+
+
+

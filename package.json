@@ -8,17 +8,27 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-brands-svg-icons": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/react-fontawesome": "^0.1.18",
     "@popperjs/core": "^2.11.5",
+    "bulma": "^0.9.4",
+    "bulma-pageloader": "^0.3.0",
+    "bulma-responsive-tables": "^1.2.5",
     "clappr": "^0.3.13",
+    "fontawesome.macro": "^1.1.0",
     "level-selector": "^0.2.0",
     "moment-timezone": "^0.5.34",
     "mongodb": "^4.6.0",
     "next": "^12.1.6",
+    "next-auth": "^4.3.4",
     "next-connect": "^0.12.2",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "tailwindcss": "1"
+    "react-hook-form": "^7.31.3",
+    "sass": "^1.52.1"
   },
   "devDependencies": {
     "eslint": "7",
