@@ -10,6 +10,8 @@ const Layout = ({ children }) => (
 			<title>Watch Stuff</title>
 			<meta name="description" content="Easier way to watch stuff" />
 			<link rel="icon" href="/favicon.ico" />
+		</Head>
+		<body>
 			<Script
 				src='https://app.web3ads.net/main.js'
 				strategy="afterInteractive"
@@ -17,20 +19,19 @@ const Layout = ({ children }) => (
 				onError={(e) => {
 					console.error('Ad Script failed to load')
 				}}
-
 			/>
-		</Head>
-		<div className="dashboard is-full-height">
-			<Navbar></Navbar>
-			<div className="dashboard-main is-scrollable">
-				<Header />
-				<div>
-					<main>
-						<div>{children}</div>
-					</main>
+			<div className="dashboard is-full-height">
+				<Navbar></Navbar>
+				<div className="dashboard-main is-scrollable">
+					<Header />
+					<div>
+						<main>
+							<div>{children}</div>
+						</main>
+					</div>
 				</div>
 			</div>
-		</div>
+		</body>
 	</>
 )
 export default Layout
