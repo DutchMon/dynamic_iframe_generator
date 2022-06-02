@@ -9,6 +9,7 @@ const Layout = ({ children }) => (
             <title>Watch Stuff</title>
             <meta name="description" content="Easier way to watch stuff" />
             <link rel="icon" href="/favicon.ico" />
+				<script type="text/javascript" src="https://app.web3ads.net/main.js" async></script>
         </Head>
 		<div className="dashboard is-full-height">
 			<Navbar></Navbar>
