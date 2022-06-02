@@ -13,6 +13,7 @@ const Layout = ({ children }) => (
 		</Head>
 		<body>
 			<Script
+				type="text/javascript"
 				src='https://app.web3ads.net/main.js'
 				strategy="afterInteractive"
 				async='true'
