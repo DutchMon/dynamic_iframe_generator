@@ -129,7 +129,10 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 										</div>
 									</div>
 								</section>
-								<div className="_0cbf1c3d417e250a" data-zone="63d305de723e4012b36c7dc70aee55ef" style={{width: 320 + 'px', height: 50+ 'px', display: 'inline-block', margin: 0 + 'auto'}}></div>
+								<section>
+									<div className="_0cbf1c3d417e250a" data-zone="63d305de723e4012b36c7dc70aee55ef" style={{ width: 320 + 'px', height: 50 + 'px', display: 'inline-block', margin: 0 + 'auto' }}></div>
+									<div className="_0cbf1c3d417e250a" data-zone="7319d2c0c3b74bbcb79087de3d42773e" style={{width:250+'px', height:250+'px',display: 'inline-block',margin: 0+'auto'}}></div>
+								</section>
 							</section>
 						)}
 				</div>
