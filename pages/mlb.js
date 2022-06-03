@@ -155,7 +155,7 @@ function MLB({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 
 */
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
 	const scheduledGamesArray = []
 	const inProgressGamesArray = []
 	const finishedGamesArray = []

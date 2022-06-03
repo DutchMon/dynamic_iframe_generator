@@ -11,7 +11,7 @@ const Player = dynamic(import("../components/Player"), { ssr: false })
 const moment = require('moment-timezone')
 
 
-function Logo(url) {
+function Video(url) {
 	return (
 		<div className="is-centered">
 			<div className="videoContainer">
@@ -24,28 +24,100 @@ function Logo(url) {
 
 function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 
-	//console.log("URLSSSSSSSSS ------ ", gameURLs)
-	let gameURL = gameURLs[0]
+	console.log("scheduled games: ", scheduled)
+	console.log("URLSSSSSSSSS ------ ", gameURLs.length)
+	let gameURL = ''
+	let urlObject = {}
+
 
 	gameURLs.forEach((e, i) => {
-		if (gameURLs[i].includes('Diamondbacks')) {
-			gameURL = gameURLs[i]
-			console.log("Yessss Dbacks")
-		} else {
-			console.log("No Dbacks")
+		for (const event in scheduled[0] ) {
+			if (gameURLs[i].includes(scheduled[0][event].teams.away.split(' ').pop()) || gameURLs[i].includes(scheduled[0][event].teams.home.split(' ').pop()) ) {
+				gameURL = gameURLs[i]
+				urlObject[scheduled[0][event]._id] = {
+					url: gameURLs[i]
+				}
+				//console.log("This URL is for the game: "+ scheduled[0][event].teams.home.split(' ').pop() + " vs " + scheduled[0][event].teams.away.split(' ').pop())
+			}
 		}
 	})
+	console.log("this is the url object ", urlObject)
 
+
+
+	const [noStream, setNoStream] = useState(true)
+	const [rowOpen, setRowOpen] = useState('')
+	const [activeStream, setActiveStream] = useState('')
+	const [eventTitleVis, setEventTitleVis] = useState('')
+
+	const toggleSubMenu = (e) => {
+
+		let parentId = e.target.parentNode.id
+		let subRowId = parentId + "Sub"
+		let gameUrl = parentId + "Url"
+		let eventName = parentId + "Event"
+
+		let subRow = document.getElementById(subRowId)
+		let result = subRow.classList.toggle('hidden')
+
+		let gunImage = document.getElementById(gameUrl)
+		let gunTitle = document.getElementById(gunTitleId)
+
+		if (!result && noStream) {
+			gunImage.classList.toggle('hidden')
+			gunTitle.classList.toggle('hidden')
+
+			//console.log('-----First click?----', noStream)
+
+			setNoStream(false)
+			setRowOpen(subRowId)
+			setActiveStream(gunImageId)
+			setEventTitleVis(gunTitleId)
+
+
+		} else if (result && !noStream) {
+
+			result
+			gunImage.classList.toggle('hidden')
+			gunTitle.classList.toggle('hidden')
+			setNoStream(true)
+			setRowOpen('')
+			setActiveStream('')
+			setEventTitleVis('')
+
+		}
+		else {
+			//console.log('----noStream-----', noStream)
+			//console.log('----idk------', result)
+
+			gunImage.classList.toggle('hidden')
+			gunTitle.classList.toggle('hidden')
+			setNoStream(true)
+
+			subRow = document.getElementById(rowOpen)
+			gunImage = document.getElementById(activeStream)
+			gunTitle = document.getElementById(eventTitleVis)
+
+			subRow.classList.toggle('hidden')
+			gunImage.classList.toggle('hidden')
+			gunTitle.classList.toggle('hidden')
+			setNoStream(false)
+			setRowOpen(subRowId)
+			setActiveStream(gunImageId)
+			setEventTitleVis(gunTitleId)
+		}
+	}
 
 
 	function makeTableRow(scheduledObj, i) {
 		let gameTime = scheduledObj.gameTime
 		let away = scheduledObj.teams.away
 		let home = scheduledObj.teams.home
-		let eventId = 'event' + i
+		let eventId = scheduledObj._id
+
 		return (
 			<>
-				<tr id={eventId} key={i}>
+				<tr id={eventId} key={i} onClick={toggleSubMenu}>
 					<td data-label="Name">{home} vs. {away}</td>
 					<td data-label="Sport">MLB</td>
 					<td data-label="Time">{gameTime}</td>
@@ -67,7 +139,7 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 						</div>
 					</section>
 					<section className="hero">
-						<Logo source={gameURL}></Logo>
+						<Video source={gameURL}></Video>
 					</section>
 				</div>
 				<div className="container">
@@ -131,7 +203,7 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 								</section>
 								<section>
 									<div className="_0cbf1c3d417e250a" data-zone="63d305de723e4012b36c7dc70aee55ef" style={{ width: 320 + 'px', height: 50 + 'px', display: 'inline-block', margin: 0 + 'auto' }}></div>
-									<div className="_0cbf1c3d417e250a" data-zone="7319d2c0c3b74bbcb79087de3d42773e" style={{width:250+'px', height:250+'px',display: 'inline-block',margin: 0+'auto'}}></div>
+									<div className="_0cbf1c3d417e250a" data-zone="7319d2c0c3b74bbcb79087de3d42773e" style={{ width: 250 + 'px', height: 250 + 'px', display: 'inline-block', margin: 0 + 'auto' }}></div>
 								</section>
 							</section>
 						)}
@@ -141,7 +213,7 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 	)
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
 	const scheduledGamesArray = []
 	const inProgressGamesArray = []
 	const finishedGamesArray = []
