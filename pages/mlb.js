@@ -13,7 +13,7 @@ const moment = require('moment-timezone')
 
 
 
-const Home = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
+const MLB = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
 
 	const VideoPlayer = ({playerKey, source }) => {
 
