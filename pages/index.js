@@ -1,11 +1,7 @@
 import Layout from '../components/layout'
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import dynamic from "next/dynamic"
-import { useSession } from 'next-auth/react'
-import Image from 'next/image'
-import tvIcon from '../public/tv-icon.png'
 import { server } from '../config'
-import Ads from '../components/Ads'
 
 
 //const Player = dynamic(import("../components/Player"), { ssr: false })
@@ -213,9 +209,6 @@ const Home = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
 											</table>
 										</div>
 									</div>
-								</section>
-								<section>
-									<Ads />
 								</section>
 							</section>
 						)}
