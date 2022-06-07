@@ -1,55 +1,135 @@
-import Head from 'next/head'
 import Layout from '../components/layout'
-import Image from 'next/image'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import dynamic from "next/dynamic"
 import { server } from '../config'
-import React, { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
-import tvIcon from '../public/tv-icon.png'
 
-const Player = dynamic(import("../components/Player"), { ssr: false })
+const Player = dynamic(() =>
+	import('../components/Player'),
+	{ ssr: false }
+)
+
 const moment = require('moment-timezone')
 
 
-function Video(url) {
-	console.log(url)
-	return (
-		<div className="is-centered">
-			<div className="videoContainer">
-				<Player source={url} />
+
+
+const Home = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
+
+	const VideoPlayer = ({playerKey, source }) => {
+
+		let options = {}
+		let playerId = 'player-wrapper'
+
+		options = {
+			source: source,
+			id: playerId,
+			key: playerKey
+		}
+
+		return (
+			<div className="is-centered">
+				<div className="videoContainer">
+					<Player options={options} />
+				</div>
 			</div>
-		</div>
-	)
-}
+		)
+	}
 
-function MLB({ gameURLs, scheduled, finished, upcoming, inProgress }) {
-
-	//console.log("URLSSSSSSSSS ------ ", gameURLs)
-	let gameURL = gameURLs[0]
+	let urlObject = {}
+	let gameURL = ''
 
 	gameURLs.forEach((e, i) => {
-		if (gameURLs[i].includes('Diamondbacks')) {
-			gameURL = gameURLs[i]
-			console.log("Yessss Dbacks")
-		} else {
-			console.log("No Dbacks")
+		for (const event in scheduled[0]) {
+			if (gameURLs[i].includes(scheduled[0][event].teams.away.split(' ').pop()) || gameURLs[i].includes(scheduled[0][event].teams.home.split(' ').pop())) {
+				gameURL = gameURLs[i]
+				urlObject[scheduled[0][event]._id] = {
+					url: gameURLs[i]
+				}
+			}
 		}
 	})
+
+	const [source, setSource] = useState(gameURL)
+	const [newStream, setNewStream] = useState(false)
+
+
+	const [playerKey, setPlayerKey] = useState(0)
+	const buildVideoPlayer = useMemo(() => VideoPlayer({playerKey,source}), [source])
+
+
+
+	const loadNewStream = (x) => {
+		let gamePk = x.target.id
+		let source = ''
+		if (urlObject[gamePk] != undefined) {
+			source = urlObject[gamePk]['url']
+		}
+
+		setSource(source = { source })
+		if (!newStream) {
+			setNewStream(true)
+			buildVideoPlayer
+			setPlayerKey(playerKey => playerKey + 1)
+		} else if (newStream) {
+			setNewStream(false)
+			console.log(source)
+		}
+	}
+
+
+	const [rowOpen, setRowOpen] = useState('')
+
+	const toggleSubMenu = useCallback((e) => {
+
+		let parentId = e.target.parentNode.id
+		let subRowId = parentId + "Sub"
+		//let newStream = urlObject[parentId]
+		//console.log("fire when row clicked ", urlObject[parentId])
+
+		let subRow = document.getElementById(subRowId)
+		let toggleRow = subRow.classList.toggle('hidden')
+
+		if (!toggleRow) {
+
+			setRowOpen(subRowId)
+
+
+		} else if (toggleRow) {
+			//Toggle row to be hidden
+			toggleRow
+			setRowOpen('')
+		}
+		else {
+			subRow = document.getElementById(rowOpen)
+			subRow.classList.toggle('hidden')
+
+			setRowOpen(subRowId)
+		}
+	}, [])
+
 
 	function makeTableRow(scheduledObj, i) {
 		let gameTime = scheduledObj.gameTime
 		let away = scheduledObj.teams.away
 		let home = scheduledObj.teams.home
-		let eventId = 'event' + i
+		let eventId = scheduledObj._id
+
 		return (
 			<>
-				<tr id={eventId} key={i}>
+				<tr id={eventId} key={i} onClick={toggleSubMenu}>
 					<td data-label="Name">{home} vs. {away}</td>
 					<td data-label="Sport">MLB</td>
 					<td data-label="Time">{gameTime}</td>
-					<td data-label="idk">idk</td>
 				</tr>
 				<tr className="detail hidden" id={eventId + 'Sub'} key={i + 'Sub'}>
+					<div className="level is-hidden-mobile">
+						<div className="level-left">
+							<p>Load new stream?</p>
+						</div>
+						<div className="level-right">
+							<button className="button is-dark" id={eventId} onClick={loadNewStream}>Load Stream</button>
+						</div>
+					</div>
 				</tr>
 			</>
 		)
@@ -66,7 +146,7 @@ function MLB({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 						</div>
 					</section>
 					<section className="hero">
-						<Video source={gameURL}></Video>
+						{buildVideoPlayer}
 					</section>
 				</div>
 				<div className="container">
@@ -81,7 +161,7 @@ function MLB({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 												<p className="title is-size-2 is-spaced">No Scheduled Events</p>
 											</div>
 											<div className="level-right">
-												<a className="button is-dark" href="">Button</a>
+												<button className="button is-dark" href="">Button</button>
 											</div>
 										</div>
 									</div>
@@ -119,9 +199,6 @@ function MLB({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 														<th>
 															<abbr title="Time">Start Time</abbr>
 														</th>
-														<th>
-															<abbr title="idk">idk</abbr>
-														</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -138,23 +215,6 @@ function MLB({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 		</Layout>
 	)
 }
-
-
-/*
-
-
-								<div className={styles.title}>Enjoy the game</div>
-								<button className="bg-blueGray-500 text-white active:bg-blueGray-600 font-bold uppercase text-base px-8 py-3 rounded shadow-md hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
-									 Get Streams
-						</button>
-
-						  <div className="main-column">
-								<div className="videoContainer">
-									 <Player source={gameURL} />
-								</div>
-						  </div>
-
-*/
 
 export async function getServerSideProps() {
 	const scheduledGamesArray = []
@@ -187,28 +247,6 @@ export async function getServerSideProps() {
 		finishedGamesArray[i] = mlbData['finished'][0][i]
 	})
 
-	/*------Don't need to use time for this honestly... the stream just wont exist if its not created yet
-
-		 scheduledGamesArray.forEach((e, index) => {
-			  awayTeams[index] = scheduledGamesArray[index].teams.away
-			  homeTeams[index] = scheduledGamesArray[index].teams.home
-			  const time1 = moment.tz("America/Phoenix").format("hh:mm A").slice(0, 5)
-			  const time2 = scheduledGamesArray[index].gameTime.slice(0, 5)
-			  const [hours1, minutes1] = time1.split(':')
-			  const [hours2, minutes2] = time2.split(':')
-			  const date1 = new Date(2022, 0, 1, +hours1, +minutes1)
-			  const date2 = new Date(2022, 0, 1, +hours2, +minutes2)
-			  const timeDif = ((date1.getTime() - date2.getTime()) / 1000) / (60 * 60)
-			  const roundedTime = Math.abs(Math.round(timeDif))
-			  console.log("date1: ", date1.getTime())
-			  console.log("date2: ", date2.getTime())
-			  if (roundedTime <= 1) {
-					scheduledUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + scheduledGamesArray[index].teams.away.split(' ').pop())
-					scheduledUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + scheduledGamesArray[index].teams.home.split(' ').pop())
-					//console.log("Scheduled stream url " + index, scheduledUrls[index])
-			  }
-		 })
-		 */
 	if (scheduledGamesArray.length >= 1) {
 		scheduledGamesArray.forEach((e, index) => {
 			awayTeams[index] = scheduledGamesArray[index].teams.away
@@ -229,13 +267,13 @@ export async function getServerSideProps() {
 	}
 	/*
 	if (finishedGamesArray.length >= 1) {
-		 finishedGamesArray.forEach((e, index) => {
-			  awayTeams[index] = finishedGamesArray[index].teams.away
-			  homeTeams[index] = finishedGamesArray[index].teams.home
-			  finishedUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + finishedGamesArray[index].teams.away.split(' ').pop())
-			  finishedUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + finishedGamesArray[index].teams.home.split(' ').pop())
-			  //console.log("inProgress stream url " + index, inProgressUrls[index])
-		 })
+		finishedGamesArray.forEach((e, index) => {
+			awayTeams[index] = finishedGamesArray[index].teams.away
+			homeTeams[index] = finishedGamesArray[index].teams.home
+			finishedUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + finishedGamesArray[index].teams.away.split(' ').pop())
+			finishedUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + finishedGamesArray[index].teams.home.split(' ').pop())
+			//console.log("inProgress stream url " + index, inProgressUrls[index])
+		})
 	}
 	*/
 
@@ -282,5 +320,4 @@ export async function getServerSideProps() {
 		}
 	}
 }
-
 export default MLB
