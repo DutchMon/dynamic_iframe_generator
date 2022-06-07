@@ -11,16 +11,6 @@ const Layout = ({ children }) => (
 			<meta name="description" content="Easier way to watch stuff" />
 			<link rel="icon" href="/favicon.ico" />
 		</Head>
-		<body>
-			<Script
-				type="text/javascript"
-				src='https://app.web3ads.net/main.js'
-				strategy="afterInteractive"
-				async='true'
-				onError={(e) => {
-					console.error('Ad Script failed to load')
-				}}
-			/>
 			<div className="dashboard is-full-height">
 				<Navbar></Navbar>
 				<div className="dashboard-main is-scrollable">
@@ -32,7 +22,6 @@ const Layout = ({ children }) => (
 					</div>
 				</div>
 			</div>
-		</body>
 	</>
 )
 export default Layout
@@ -40,3 +29,18 @@ export default Layout
 Layout.propTypes = {
 	children: PropTypes.node,
 }
+
+/*
+
+
+			<Script
+				type="text/javascript"
+				src='https://app.web3ads.net/main.js'
+				strategy="afterInteractive"
+				async='true'
+				onError={(e) => {
+					console.error('Ad Script failed to load')
+				}}
+			/>
+
+*/

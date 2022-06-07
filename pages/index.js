@@ -1,5 +1,5 @@
 import Layout from '../components/layout'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import dynamic from "next/dynamic"
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -7,106 +7,110 @@ import tvIcon from '../public/tv-icon.png'
 import { server } from '../config'
 
 
-const Player = dynamic(import("../components/Player"), { ssr: false })
+//const Player = dynamic(import("../components/Player"), { ssr: false })
+const Player = dynamic(() =>
+	import('../components/Player'),
+	{ ssr: false }
+)
+
 const moment = require('moment-timezone')
 
 
-function Video(url) {
-	return (
-		<div className="is-centered">
-			<div className="videoContainer">
-				<Player source={url} />
+
+
+const Home = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
+
+	const VideoPlayer = ({playerKey, source }) => {
+
+		let options = {}
+		let playerId = 'player-wrapper'
+
+		options = {
+			source: source,
+			id: playerId,
+			key: playerKey
+		}
+
+		return (
+			<div className="is-centered">
+				<div className="videoContainer">
+					<Player options={options} />
+				</div>
 			</div>
-		</div>
-	)
-}
+		)
+	}
 
-
-function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
-
-	console.log("scheduled games: ", scheduled)
-	console.log("URLSSSSSSSSS ------ ", gameURLs.length)
-	let gameURL = ''
 	let urlObject = {}
-
+	let gameURL = ''
 
 	gameURLs.forEach((e, i) => {
-		for (const event in scheduled[0] ) {
-			if (gameURLs[i].includes(scheduled[0][event].teams.away.split(' ').pop()) || gameURLs[i].includes(scheduled[0][event].teams.home.split(' ').pop()) ) {
+		for (const event in scheduled[0]) {
+			if (gameURLs[i].includes(scheduled[0][event].teams.away.split(' ').pop()) || gameURLs[i].includes(scheduled[0][event].teams.home.split(' ').pop())) {
 				gameURL = gameURLs[i]
 				urlObject[scheduled[0][event]._id] = {
 					url: gameURLs[i]
 				}
-				//console.log("This URL is for the game: "+ scheduled[0][event].teams.home.split(' ').pop() + " vs " + scheduled[0][event].teams.away.split(' ').pop())
 			}
 		}
 	})
-	console.log("this is the url object ", urlObject)
+
+	const [source, setSource] = useState(gameURL)
+	const [newStream, setNewStream] = useState(false)
+
+
+	const [playerKey, setPlayerKey] = useState(0)
+	const buildVideoPlayer = useMemo(() => VideoPlayer({playerKey,source}), [source])
 
 
 
-	const [noStream, setNoStream] = useState(true)
+	const loadNewStream = (x) => {
+		let gamePk = x.target.id
+		let source = ''
+		if (urlObject[gamePk] != undefined) {
+			source = urlObject[gamePk]['url']
+		}
+
+		setSource(source = { source })
+		if (!newStream) {
+			setNewStream(true)
+			buildVideoPlayer
+			setPlayerKey(playerKey => playerKey + 1)
+		} else if (newStream) {
+			setNewStream(false)
+			console.log(source)
+		}
+	}
+
+
 	const [rowOpen, setRowOpen] = useState('')
-	const [activeStream, setActiveStream] = useState('')
-	const [eventTitleVis, setEventTitleVis] = useState('')
 
-	const toggleSubMenu = (e) => {
+	const toggleSubMenu = useCallback((e) => {
 
 		let parentId = e.target.parentNode.id
 		let subRowId = parentId + "Sub"
-		let gameUrl = parentId + "Url"
-		let eventName = parentId + "Event"
+		//let newStream = urlObject[parentId]
+		//console.log("fire when row clicked ", urlObject[parentId])
 
 		let subRow = document.getElementById(subRowId)
-		let result = subRow.classList.toggle('hidden')
+		let toggleRow = subRow.classList.toggle('hidden')
 
-		let gunImage = document.getElementById(gameUrl)
-		let gunTitle = document.getElementById(gunTitleId)
+		if (!toggleRow) {
 
-		if (!result && noStream) {
-			gunImage.classList.toggle('hidden')
-			gunTitle.classList.toggle('hidden')
-
-			//console.log('-----First click?----', noStream)
-
-			setNoStream(false)
 			setRowOpen(subRowId)
-			setActiveStream(gunImageId)
-			setEventTitleVis(gunTitleId)
 
 
-		} else if (result && !noStream) {
-
-			result
-			gunImage.classList.toggle('hidden')
-			gunTitle.classList.toggle('hidden')
-			setNoStream(true)
+		} else if (toggleRow) {
+			//Toggle row to be hidden
+			toggleRow
 			setRowOpen('')
-			setActiveStream('')
-			setEventTitleVis('')
-
 		}
 		else {
-			//console.log('----noStream-----', noStream)
-			//console.log('----idk------', result)
-
-			gunImage.classList.toggle('hidden')
-			gunTitle.classList.toggle('hidden')
-			setNoStream(true)
-
 			subRow = document.getElementById(rowOpen)
-			gunImage = document.getElementById(activeStream)
-			gunTitle = document.getElementById(eventTitleVis)
-
 			subRow.classList.toggle('hidden')
-			gunImage.classList.toggle('hidden')
-			gunTitle.classList.toggle('hidden')
-			setNoStream(false)
+
 			setRowOpen(subRowId)
-			setActiveStream(gunImageId)
-			setEventTitleVis(gunTitleId)
 		}
-	}
+	}, [])
 
 
 	function makeTableRow(scheduledObj, i) {
@@ -123,6 +127,14 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 					<td data-label="Time">{gameTime}</td>
 				</tr>
 				<tr className="detail hidden" id={eventId + 'Sub'} key={i + 'Sub'}>
+					<div className="level is-hidden-mobile">
+						<div className="level-left">
+							<p>Load new stream?</p>
+						</div>
+						<div className="level-right">
+							<button className="button is-dark" id={eventId} onClick={loadNewStream}>Load Stream</button>
+						</div>
+					</div>
 				</tr>
 			</>
 		)
@@ -139,7 +151,7 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 						</div>
 					</section>
 					<section className="hero">
-						<Video source={gameURL}></Video>
+						{buildVideoPlayer}
 					</section>
 				</div>
 				<div className="container">
@@ -154,7 +166,7 @@ function Home({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 												<p className="title is-size-2 is-spaced">No Scheduled Events</p>
 											</div>
 											<div className="level-right">
-												<a className="button is-dark" href="">Button</a>
+												<button className="button is-dark" href="">Button</button>
 											</div>
 										</div>
 									</div>
@@ -244,28 +256,6 @@ export async function getServerSideProps() {
 		finishedGamesArray[i] = mlbData['finished'][0][i]
 	})
 
-	/*------Don't need to use time for this honestly... the stream just wont exist if its not created yet
-
-		scheduledGamesArray.forEach((e, index) => {
-			awayTeams[index] = scheduledGamesArray[index].teams.away
-			homeTeams[index] = scheduledGamesArray[index].teams.home
-			const time1 = moment.tz("America/Phoenix").format("hh:mm A").slice(0, 5)
-			const time2 = scheduledGamesArray[index].gameTime.slice(0, 5)
-			const [hours1, minutes1] = time1.split(':')
-			const [hours2, minutes2] = time2.split(':')
-			const date1 = new Date(2022, 0, 1, +hours1, +minutes1)
-			const date2 = new Date(2022, 0, 1, +hours2, +minutes2)
-			const timeDif = ((date1.getTime() - date2.getTime()) / 1000) / (60 * 60)
-			const roundedTime = Math.abs(Math.round(timeDif))
-			console.log("date1: ", date1.getTime())
-			console.log("date2: ", date2.getTime())
-			if (roundedTime <= 1) {
-				scheduledUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + scheduledGamesArray[index].teams.away.split(' ').pop())
-				scheduledUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + scheduledGamesArray[index].teams.home.split(' ').pop())
-				//console.log("Scheduled stream url " + index, scheduledUrls[index])
-			}
-		})
-		*/
 	if (scheduledGamesArray.length >= 1) {
 		scheduledGamesArray.forEach((e, index) => {
 			awayTeams[index] = scheduledGamesArray[index].teams.away

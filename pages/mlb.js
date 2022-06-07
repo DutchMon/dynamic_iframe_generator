@@ -11,9 +11,10 @@ const Player = dynamic(import("../components/Player"), { ssr: false })
 const moment = require('moment-timezone')
 
 
-function Logo(url) {
+function Video(url) {
+	console.log(url)
 	return (
-		<div className="is-centered is-centered-logo">
+		<div className="is-centered">
 			<div className="videoContainer">
 				<Player source={url} />
 			</div>
@@ -65,7 +66,7 @@ function MLB({ gameURLs, scheduled, finished, upcoming, inProgress }) {
 						</div>
 					</section>
 					<section className="hero">
-						<Logo source={gameURL}></Logo>
+						<Video source={gameURL}></Video>
 					</section>
 				</div>
 				<div className="container">
