@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Header from './Header'
 import PropTypes from 'prop-types'
 import Script from 'next/script'
+import Image from 'next/image'
 
 const Layout = ({ children }) => (
 	<>
@@ -11,26 +12,25 @@ const Layout = ({ children }) => (
 			<meta name="description" content="Easier way to watch stuff" />
 			<link rel="icon" href="/favicon.ico" />
 		</Head>
-			<Script
-				type="text/javascript"
-				src='https://app.web3ads.net/main.js'
-				strategy="afterInteractive"
-				async='true'
-				onError={(e) => {
-					console.error('Ad Script failed to load')
-				}}
-			/>
-			<div className="dashboard is-full-height">
-				<Navbar></Navbar>
-				<div className="dashboard-main is-scrollable">
-					<Header />
-					<div>
-						<main>
-							<div>{children}</div>
-						</main>
-					</div>
+		<Image
+			className='backgroundImg'
+			src='/background.jpg'
+			alt='stadium background'
+			layout='fill'
+			objectFit='cover'
+			objectPosition='center'
+		/>
+		<div className="dashboard is-full-height">
+			<Navbar></Navbar>
+			<div className="dashboard-main is-scrollable">
+				<Header />
+				<div>
+					<main>
+						<div>{children}</div>
+					</main>
 				</div>
 			</div>
+		</div>
 	</>
 )
 export default Layout
