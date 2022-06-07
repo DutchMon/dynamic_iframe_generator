@@ -55,7 +55,7 @@ async function getMLB(req, res) {
       scheduled: JSON.parse(JSON.stringify(allPosts.scheduled)),
       finished: JSON.parse(JSON.stringify(allPosts.finished)),
       upcoming: JSON.parse(JSON.stringify(allPosts.upcoming)),
-      inProgress: JSON.parse(JSON.stringify(allPosts.inProgress)),
+		inProgress: JSON.parse(JSON.stringify(allPosts.inProgress)),
       success: true,
     })
   } catch (error) {

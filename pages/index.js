@@ -52,7 +52,7 @@ const Home = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
 	})
 
 	const [source, setSource] = useState(gameURL)
-	const [newStream, setNewStream] = useState(false)
+	const [noStream, setNoStream] = useState(false)
 
 
 	const [playerKey, setPlayerKey] = useState(0)
@@ -62,22 +62,42 @@ const Home = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
 
 	const loadNewStream = (x) => {
 		let gamePk = x.target.id
-		let source = ''
+		let source = null
 		if (urlObject[gamePk] != undefined) {
 			source = urlObject[gamePk]['url']
 		}
 
-		setSource(source = { source })
-		if (!newStream) {
-			setNewStream(true)
+		let playerContainer = document.getElementById('no-stream-available')
+
+		if (source == null) {
+			console.log('Unfortunately there is no stream available yet.')
+			setNoStream(false)
+			console.log(noStream)
+
+		} else {
+			setSource(source = { source })
 			buildVideoPlayer
 			setPlayerKey(playerKey => playerKey + 1)
-		} else if (newStream) {
-			setNewStream(false)
-			console.log(source)
+			console.log('change source: ', source)
+			setNoStream(true)
 		}
 	}
 
+	const StreamUnavailable = () => {
+		return (
+
+			<div className="is-centered">
+				<div className='alert-container'>
+						<div className="columns is-centered" id='noStreamAlert'>
+							<div className='column has-text-centered'>
+								<p className='title is-1'>Stream Unavailable</p>
+								<p className='subtitle'>Select a different stream</p>
+							</div>
+						</div>
+					</div>
+				</div>
+		)
+	}
 
 	const [rowOpen, setRowOpen] = useState('')
 
@@ -140,12 +160,7 @@ const Home = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
 			<div className="column opacityLayer">
 				<div className="container">
 					<section className="hero is-small">
-						<div className="hero-body">
-							<h1 className="title is-size-2 is-uppercase mobileTextCenter" >Watch Live Sports!</h1>
-						</div>
-					</section>
-					<section className="hero">
-						{buildVideoPlayer}
+						{noStream ? (buildVideoPlayer) : (<StreamUnavailable />)}
 					</section>
 				</div>
 				<div className="container">
@@ -177,7 +192,7 @@ const Home = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
 												<p className="title is-size-2 is-spaced">Top Events</p>
 											</div>
 											<div className="level-right">
-												<a className="button is-dark" href="">Button</a>
+												<button className="button is-dark" onClick={()=> {setNoStream(false)}}>Button</button>
 											</div>
 										</div>
 									</div>
@@ -234,7 +249,7 @@ export async function getServerSideProps() {
 	const mlbRes = await fetch(`${server}/api/mlb`)
 	let mlbData = await mlbRes.json()
 
-	//console.log("--Hello--", mlbData['inProgress'])
+	//console.log("--Hello--", mlbData)
 
 	mlbData['scheduled'][0].forEach((e, i) => {
 		scheduledGamesArray[i] = mlbData['scheduled'][0][i]
@@ -264,17 +279,6 @@ export async function getServerSideProps() {
 			//console.log("inProgress stream url " + index, inProgressUrls[index])
 		})
 	}
-	/*
-	if (finishedGamesArray.length >= 1) {
-		finishedGamesArray.forEach((e, index) => {
-			awayTeams[index] = finishedGamesArray[index].teams.away
-			homeTeams[index] = finishedGamesArray[index].teams.home
-			finishedUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + finishedGamesArray[index].teams.away.split(' ').pop())
-			finishedUrls.push('https://www.givemevibes.com/boot/pass.php?id=' + finishedGamesArray[index].teams.home.split(' ').pop())
-			//console.log("inProgress stream url " + index, inProgressUrls[index])
-		})
-	}
-	*/
 
 	inProgressUrls.forEach((e, i) => {
 		streamUrls.push(inProgressUrls[i])
