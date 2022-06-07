@@ -15,7 +15,7 @@ const moment = require('moment-timezone')
 
 const MLB = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
 
-	const VideoPlayer = ({playerKey, source }) => {
+	const VideoPlayer = ({ playerKey, source }) => {
 
 		let options = {}
 		let playerId = 'player-wrapper'
@@ -122,14 +122,11 @@ const MLB = ({ gameURLs, scheduled, finished, upcoming, inProgress }) => {
 					<td data-label="Time">{gameTime}</td>
 				</tr>
 				<tr className="detail hidden" id={eventId + 'Sub'} key={i + 'Sub'}>
-					<div className="level is-hidden-mobile">
-						<div className="level-left">
-							<p>Load new stream?</p>
-						</div>
-						<div className="level-right">
-							<button className="button is-dark" id={eventId} onClick={loadNewStream}>Load Stream</button>
-						</div>
-					</div>
+					<td>Load new stream?</td>
+					<td className="level-right">
+						<button className="button is-dark" id={eventId} onClick={loadNewStream}>Load Stream</button>
+					</td>
+					<td></td>
 				</tr>
 			</>
 		)
