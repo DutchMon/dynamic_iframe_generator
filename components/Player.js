@@ -11,7 +11,7 @@ export default function Player({ options }) {
 	let player = null
 
 	useEffect(() => {
-
+/* ignore for now
 		(function (open) {
 			XMLHttpRequest.prototype.open = function (method, url, async, user, pass) {
 
@@ -22,12 +22,14 @@ export default function Player({ options }) {
 				}
 
 				var rewrittenUrl = url
-				rewrittenUrl = rewrittenUrl.replace('https://playback.svcs.mlb.com/silk/events/', 'http://bestsolaris.com/mlbkey.php?url=')
+				rewrittenUrl = rewrittenUrl.replace('https://playback.svcs.mlb.com/silk/events/', 'https://cdn.hyunas.icu/keys/mlb1/tigers1.php?')
 				open.call(this, method, rewrittenUrl, async, user, pass)
 
 			}
 
 		})(XMLHttpRequest.prototype.open)
+
+		*/
 
 		let source = options.source
 		let playerId = options.id
@@ -35,7 +37,7 @@ export default function Player({ options }) {
 
 		player = new Clappr.Player({
 			parentId: playerId,
-			source: 'https://hlslive-akc-ewr1.media.mlb.com/hdnts=exp=1654812913~acl=/*~id=00u7vsjxkvmsbqwwy356~data=e9b93528-3ec4-4228-a14d-15bd0a22ea11~hmac=147c1dc371ef78b4836eac88d2cc20ee3c80bfd4b04adb4896fa1f2da5313912/307764489dca78f597cf94245d3ad94c/va01/mlb/2022/06/08/Away_VIDEO_eng_Arizona_Diamondbacks_Cinc_20220608_1654720832047/master_desktop_slide_gdfp.m3u8',
+			source: source,
 			mimeType: 'application/x-mpegURL',
 			mediacontrol: { seekbar: "#0053EF", buttons: "#D61616" },
 			autoPlay: false,
